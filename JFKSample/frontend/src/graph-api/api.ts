@@ -27,6 +27,7 @@ export const CreateGraphApi = (config: GraphConfig,
     },
     async runQuery(payload) {
       try {
+        alert("run");
         const request = CreateRequest(config, payload);
         console.debug("Running Query:", request.url); // Debug only.
         const response = await fetch(request.url, request.options);

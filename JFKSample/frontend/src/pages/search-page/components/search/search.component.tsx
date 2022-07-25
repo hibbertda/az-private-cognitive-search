@@ -69,6 +69,7 @@ const SearchComponent: React.StatelessComponent<SearchProps> = (props) => {
           onSearchUpdate={props.onSearchUpdate}
           onKeyPress={captureEnter(props)}
         />
+
         <SearchButton onClick={props.onSearchSubmit} />
       </div>
       {

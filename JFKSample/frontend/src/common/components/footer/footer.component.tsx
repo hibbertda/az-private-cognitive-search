@@ -13,7 +13,7 @@ const Links = () => (
 
 const Statement = () => (
   <div className={style.statementArea}>
-    © 2021 - Plum Island Animal Disease Center
+    © 2022 - US Department of State
   </div>
 );
 

@@ -21,10 +21,10 @@ interface DrawerBarProps {
 const DrawerBarCaption = () => (
   <div className={style.caption}>
     <p className={style.title} color="inherit">
-    Plum Island Animal Disease Center
+    U.S. Department of State
     </p>
     <p className={style.subtitle} color="inherit">
-    The front line of the nation’s defense against diseases.
+    Directorate of Defense Trade Controls.
     </p>
   </div>
 );

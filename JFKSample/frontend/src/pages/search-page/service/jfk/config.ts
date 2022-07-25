@@ -65,37 +65,39 @@ export const jfkServiceConfig: ServiceConfig = {
         config: {
           count: 20,
         }
-      },
-      {
-        fieldId: "Section",
-        displayName: "Section",
-        iconName: null,
-        selectionControl: "checkboxList",
-        values: null,
-        config: {
-          count: 20,
-        }
-      },
-      {
-        fieldId: "Author",
-        displayName: "Author",
-        iconName: null,
-        selectionControl: "checkboxList",
-        values: null,
-        config: {
-          count: 20,
-        }
-      },
-      {
-        fieldId: "Point_of_Contact",
-        displayName: "Point_of_Contact",
-        iconName: null,
-        selectionControl: "checkboxList",
-        values: null,
-        config: {
-          count: 20,
-        }
       }
+      
+      // ,
+      // {
+      //   fieldId: "Section",
+      //   displayName: "Section",
+      //   iconName: null,
+      //   selectionControl: "checkboxList",
+      //   values: null,
+      //   config: {
+      //     count: 20,
+      //   }
+      // },
+      // {
+      //   fieldId: "Author",
+      //   displayName: "Author",
+      //   iconName: null,
+      //   selectionControl: "checkboxList",
+      //   values: null,
+      //   config: {
+      //     count: 20,
+      //   }
+      // },
+      // {
+      //   fieldId: "Point_of_Contact",
+      //   displayName: "Point_of_Contact",
+      //   iconName: null,
+      //   selectionControl: "checkboxList",
+      //   values: null,
+      //   config: {
+      //     count: 20,
+      //   }
+      //}
 
 
 

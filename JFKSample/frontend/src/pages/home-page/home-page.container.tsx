@@ -20,6 +20,8 @@ export class HomePageContainer extends React.Component<RouteComponentProps<any>,
   private handleSearchSubmit = () => {        
     const params = qs.stringify({term: this.state.searchValue});
 
+
+
     this.props.history.push({
       pathname: searchPath,
       search: `?${params}`
