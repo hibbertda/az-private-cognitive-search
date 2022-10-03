@@ -1,0 +1,58 @@
+name: AzPublic
+# workflow trigger
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  #push:
+  #  branches: [ "main" ]
+  #pull_request:
+  #  branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  deployCoreInfra:
+    runs-on: ubuntu-latest
+    environment: airs
+    env:
+      RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+      STORAGE_ACCOUNT: ${{ secrets.STORAGE_ACCOUNT }}
+      STORAGE_ACCOUNT_KEY: ${{ secrets.STORAGE_ACCOUNT_KEY }}
+      CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}
+
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}      
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      - name: HashiCorp - Setup Terraform
+        uses: hashicorp/setup-terraform@v2.0.0
+        with:
+          terraform_wrapper: false
+
+      - name: AZCli Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.SERVICE_PRINCIPAL }}
+
+      - name: Terraform Init
+        id: init
+
+        run: |
+          terraform init \
+          -backend-config="storage_account_name=$STORAGE_ACCOUNT" \
+          -backend-config="container_name=$CONTAINER_NAME" \
+          -backend-config="resource_group_name=$RESOURCE_GROUP" \
+          -backend-config="access_key=$STORAGE_ACCOUNT_KEY"
+
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply --auto-approve
+
