@@ -1,8 +1,9 @@
-
 locals {
-  dns_search_pl   = "privatelink.search.windows.net"
-  dns_search      = "search.windows.net"
-  dns_cogServices = "cognitiveservices.azure.com"
+  dns_search_pl       = "privatelink.search.windows.net"
+  dns_search          = "search.windows.net"
+  dns_search_pl_gov   = "search.azure.us"
+  dns_cogServices     = "cognitiveservices.azure.com"
+  dns_cogServices_gov = "cognitiveservices.azure.us"
 }
 
 resource "azurerm_cognitive_account" "cogsvcs" {
@@ -26,12 +27,11 @@ resource "azurerm_cognitive_account" "cogsvcs" {
       }
     }
   }
-
   sku_name = "S0"
 }
 
 resource "azurerm_private_dns_zone" "cog-services" {
-  name                = local.dns_cogServices
+  name                = var.environment == "gov" ? local.dns_cogServices_gov : local.dns_cogServices
   resource_group_name = var.resourcegroup.name
   tags                = var.tags 
 }
@@ -98,17 +98,9 @@ The variable azSearch.public_access manages if private endpoints for the Azure s
 
   https://learn.microsoft.com/en-us/azure/search/service-create-private-endpoint
 */
-
-resource "azurerm_private_dns_zone" "search" {
-  count               = var.azSearch.public_access == true ? 0 : 1
-  name                = local.dns_search
-  resource_group_name = var.resourcegroup.name
-  tags                = var.tags 
-}
-
 resource "azurerm_private_dns_zone" "search-pl" {
-  count               = var.azSearch.public_access == true ? 0 : 1
-  name                = local.dns_search_pl
+  count               = var.azSearch.create_priavte_dns_zone == false ? 0 : 1
+  name                = var.environment == "gov" ? local.dns_search_gov : local.dns_search_pl
   resource_group_name = var.resourcegroup.name
   tags                = var.tags 
 }
@@ -121,7 +113,7 @@ resource "azurerm_private_endpoint" "search-endpoints" {
   https://learn.microsoft.com/en-us/azure/cognitive-services/cognitive-services-virtual-networks?tabs=portal#use-private-endpoints
   */
   name                = lower("pl-search-${var.random}")
-  count               = var.azSearch.public_access == true ? 0 : 1
+  count               = var.azSearch.enable_private_endpoint == false ? 0 : 1
   resource_group_name = var.resourcegroup.name
   location            = var.resourcegroup.location
   subnet_id           = var.subnet.id
@@ -134,11 +126,15 @@ resource "azurerm_private_endpoint" "search-endpoints" {
     subresource_names               = ["searchService"]
   }
 
-  private_dns_zone_group {
-    name                  = "search"
-    private_dns_zone_ids  = [
-      azurerm_private_dns_zone.search-pl[count.index].id
-    ]
+
+  dynamic "private_dns_zone_group" {
+    for_each = toset(var.azSearch.create_priavte_dns_zone != false ? ["fake"] : [])
+    content {
+      name                  = "search"
+      private_dns_zone_ids  = [
+        azurerm_private_dns_zone.search-pl[count.index].id
+      ]      
+    }
   }
 }
 

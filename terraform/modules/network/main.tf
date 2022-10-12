@@ -28,8 +28,8 @@ resource "azurerm_subnet" "subnets" {
   virtual_network_name  = azurerm_virtual_network.vnet.name
   address_prefixes      = each.value.address_prefix 
 
-  private_endpoint_network_policies_enabled = true
-  private_link_service_network_policies_enabled = true
+  private_endpoint_network_policies_enabled     = false
+  private_link_service_network_policies_enabled = false
 
   /*
   Service endpoints will be added to the subnet configuration when the 'enable_service_endpoint'

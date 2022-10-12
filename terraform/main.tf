@@ -37,6 +37,7 @@ module "cogsvcs" {
   resourcegroup   = azurerm_resource_group.core
   tags            = var.tags
   random          = random_string.random.result
+  environment     = var.environment
   
   cogsvcs         = var.cogsvcs
   virtualnetwork  = module.network.vnet

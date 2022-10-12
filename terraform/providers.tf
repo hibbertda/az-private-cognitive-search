@@ -4,15 +4,13 @@ terraform {
         source = "hashicorp/azurerm"
     }
   }
-  backend "azurerm" {
-    #key = "terraform.tfstate"    
-  }
+  # backend "azurerm" {
+  #   #key = "terraform.tfstate"    
+  # }
 }
 
 provider "azurerm" {
-  features {
-
-  }
+  features {}
 }
 
 provider "azurerm" {
