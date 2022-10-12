@@ -1,2 +1,3 @@
-# cust-dos-ddtc-cognitive-search
-Department of State - DDTC - Cognitive Search MVP
+# Private Cognitive Search POC
+Private Cognitive Search POC
+
